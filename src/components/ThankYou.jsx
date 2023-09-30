@@ -12,7 +12,6 @@ const ThankYouWrapper = styled.div`
   text-align: left;
   border: 1px solid white;
   padding: 20px;
-
   max-width: 1000px;
   overflow: hidden;
   margin: 0 auto;
@@ -172,8 +171,16 @@ const IdField = styled.h4`
 const TitleLetter = styled.span`
   animation: ${glowAnimation} 2s ease-in-out infinite;
   text-shadow: 1px 1px 2px #009d71;
+  font-size: 28px;
   color: transparent;
 `;
+const ThankYouContainer = styled.div`
+display:flex;
+width: "100%"; justify-content: "center":
+height:100%;
+min-height:100vh;
+background-color:black;
+flex-direction:column;`;
 const ThankYou = () => {
   const formValues = useSelector((state) => state.form.formValues);
   const userRecord = useSelector((state) => state.form.userRecord);
@@ -242,18 +249,16 @@ const ThankYou = () => {
   };
 
   return (
-    <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
-      <ThankYouWrapper aria-label="Thank you message">
-        <ThankYouHeading>
-          {title.map((el, index) => (
-            <TitleLetter key={index} style={{ animationDelay: `${index * 0.25}s` }}>
-              {el}
-            </TitleLetter>
-          ))}
-        </ThankYouHeading>
-        {renderUserData()}
-      </ThankYouWrapper>
-    </div>
+    <ThankYouContainer style={{ display: "flex", width: "100%", justifyContent: "center" }}>
+      <ThankYouHeading>
+        {title.map((el, index) => (
+          <TitleLetter key={index} style={{ animationDelay: `${index * 0.25}s` }}>
+            {el}
+          </TitleLetter>
+        ))}
+      </ThankYouHeading>
+      <ThankYouWrapper aria-label="Thank you message">{renderUserData()}</ThankYouWrapper>
+    </ThankYouContainer>
   );
 };
 
