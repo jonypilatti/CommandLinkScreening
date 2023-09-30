@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import styled from "styled-components"; // Import styled-components
+import styled, { keyframes } from "styled-components"; // Import styled-components
 import { useDispatch, useSelector } from "react-redux";
 import { getForm, setUserRecord } from "../../redux/formReducer";
 import { validateSelect, validateText, validateTextarea } from "../utils/validations";
@@ -7,13 +7,26 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 // Define styled-components
+
+const glowAnimation = keyframes`
+  0%, to {
+    color: #009d71;
+    text-shadow: 0 0 12px #009d71, 0 0 50px #009d71, 0 0 100px #009d71;
+  }
+  `;
+
 const FormContainer = styled.div`
   display: flex;
+  background-color: black;
+  min-height: 100vh;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
   flex-wrap: wrap;
   overflow: hidden;
+  align-self: center;
+  height: 100%;
   .row {
     width: 100%;
     display: flex;
@@ -22,20 +35,123 @@ const FormContainer = styled.div`
   }
   form {
     display: flex;
+    max-width: 600px;
+    align-self: center;
     flex-direction: column;
-    width: 100%;
   }
   div {
     margin-bottom: 10px;
   }
-
-  select,
-  textarea,
-  input {
+  label {
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    gap: 5px;
+    @media (max-width: 450px) {
+      font-size: 20px;
+    }
+  }
+  textarea {
     display: flex;
     padding: 5px;
     width: 100%;
+    color: #2823bc;
+    font-weight: 600;
+    font-size: 16px;
     box-sizing: border-box;
+    background-color: rgb(240, 240, 240);
+    min-height: 200px;
+    @media (max-width: 450px) {
+      min-height: 150px;
+    }
+    &::placeholder {
+      color: #2823bc;
+      font-weight: 600;
+    }
+  }
+
+  input {
+    border: 2px solid black;
+    color: #2823bc;
+    font-weight: 600;
+    background-color: rgb(240, 240, 240);
+    display: flex;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f0f0f0;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #999;
+    }
+    &:focus {
+      background-color: rgb(68, 85, 111);
+      border: 2px solid #c8ff00;
+      color: #8ed8f8;
+      &::placeholder {
+        color: #8ed8f8;
+      }
+    }
+    &::placeholder {
+      color: #2823bc;
+      font-weight: 600;
+    }
+  }
+
+  select {
+    border: 2px solid black;
+    color: #2823bc;
+    font-weight: 600;
+    background-color: rgb(240, 240, 240);
+    display: flex;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f0f0f0;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #999;
+    }
+    &:focus {
+      background-color: rgb(68, 85, 111);
+      border: 2px solid #c8ff00;
+      color: #8ed8f8;
+      &::placeholder {
+        color: #8ed8f8;
+      }
+    }
+    &::placeholder {
+      color: #2823bc;
+      font-weight: 600;
+    }
   }
   .selectContainer {
     width: 100%;
@@ -46,18 +162,82 @@ const FormContainer = styled.div`
   .textContainer {
     width: 100%;
   }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(68, 85, 111) inset !important;
+    -webkit-text-fill-color: #8ed8f8 !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+  .Error {
+    color: #ff7c39;
+  }
   @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
 
-const RegisterTitle = styled.h3`
+const RegisterTitle = styled.h1`
   font-weight: bold;
   text-align: center;
   align-self: center;
-  color: white;
+  font-weight: 900;
+  color: transparent;
+  @media (max-width: 450px) {
+    font-size: 28px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `;
 
+const WelcomeLetter = styled.span`
+  animation: ${glowAnimation} 2s ease-in-out infinite;
+  text-shadow: 1px 1px 2px #009d71;
+  color: transparent;
+`;
+const SubmitButton = styled.button`
+  background-color: #009d71;
+  margin-bottom: 40px;
+  color: black;
+  float: bottom;
+  &:hover {
+    font-weight: bold;
+    color: white;
+    border: 1px solid rgb(68, 85, 111);
+    box-shadow: 2px 3px 20px #009d71;
+  }
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+
+  align-self: center;
+  background-color: #4c007d;
+  min-height: 400px;
+  min-width: 150px;
+  border-radius: 16px;
+  border: 2px solid white;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 50px;
+  padding: 10px;
+`;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+`;
+const Title = styled.h3`
+  text-align: center;
+  font-size: 24px;
+`;
+const Message = styled.span`
+  font-size: 16px;
+  text-align: center;
+`;
 const Form = () => {
   //Hook for navigation to the ThankYou component
   const navigate = useNavigate();
@@ -66,9 +246,7 @@ const Form = () => {
   //States for the Errors and Input values
   const [formErrors, setFormErrors] = useState({});
   const [formState, setFormState] = useState({});
-  console.log(formState, "form state");
-
-  console.log(formErrors, "form errors");
+  // console.log(formErrors, "los form errors", formState);
   const dispatch = useDispatch();
   //Auxiliary functions to make the initialState for the dynamic form
   function extractIds(data) {
@@ -86,7 +264,7 @@ const Form = () => {
   useEffect(() => {
     //First I have to fetch all the dynamic json information. Then that same action dispatches the action to the store. And when that state updates, the render does the same.
     dispatch(getForm());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     // Get all the IDs from the JSON
@@ -148,7 +326,8 @@ const Form = () => {
   );
 
   // Function to render fields based on the JSON structure
-  const renderFields = useMemo(() => {
+
+  const RenderFields = useMemo(() => {
     const renderField = (field) => {
       const placeholder = field?.placeholder
         ? field.placeholder.slice(0, 1).toUpperCase() + field.placeholder.slice(1)
@@ -156,47 +335,74 @@ const Form = () => {
       if (field.type === "select") {
         return (
           <div key={field.id} className="selectContainer">
-            <select name={field.id.toLowerCase()} onChange={handleChange} id={field.id}>
-              <option value={"placeholder"}>{placeholder}</option>
-              {field.options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
+            <label id={`label-${field.id}`} htmlFor={`select-${field.id}`}>
+              {placeholder}
+              <select
+                name={field.id.toLowerCase()}
+                onChange={handleChange}
+                id={`select-${field.id}`}
+                aria-labelledby={`label-${field.id}`}
+                aria-describedby={`${field.id}Error`}
+              >
+                <option className="optionStyle" value={"placeholder"}>
+                  {placeholder}
                 </option>
-              ))}
-            </select>
-            {formErrors[field.id.toLowerCase()]}
+                {field.options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div id={`${field.id}Error`} className="Error">
+              {formErrors[field.id.toLowerCase()]}
+            </div>
           </div>
         );
       } else if (field.type === "textarea") {
         return (
           <div key={field.id} className="textareaContainer">
-            <textarea
-              name={field.id.toLowerCase()}
-              onChange={handleChange}
-              id={field.id}
-              placeholder={placeholder}
-            ></textarea>
-            {formErrors[field.id.toLowerCase()]}
+            <label id={`label-${field.id}`} htmlFor={`textarea-${field.id}`}>
+              {placeholder}
+              <textarea
+                name={field.id.toLowerCase()}
+                onChange={handleChange}
+                placeholder="Please enter your message here..."
+                id={`textarea-${field.id}`}
+                aria-labelledby={`label-${field.id}`}
+                aria-describedby={`${field.id}Error`}
+              ></textarea>
+            </label>
+            <div id={`${field.id}Error`} className="Error">
+              {formErrors[field.id.toLowerCase()]}
+            </div>
           </div>
         );
       } else {
         return (
           <div key={field.id} className="textContainer">
-            <input
-              onChange={handleChange}
-              type={field.type}
-              name={field.id.toLowerCase()}
-              id={field.id}
-              placeholder={placeholder}
-              required={field.required || true} //This is because I wanted every field in the form to be required for the sake of the exercise.
-            />
-            {formErrors[field.id.toLowerCase()]}
+            <label id={`label-${field.id}`} htmlFor={`input-${field.id}`}>
+              {placeholder}
+              <input
+                onChange={handleChange}
+                type={field.type}
+                name={field.id.toLowerCase()}
+                id={`input-${field.id}`}
+                placeholder={placeholder}
+                required={field.required || true}
+                aria-labelledby={`label-${field.id}`}
+                aria-describedby={`${field.id}Error`}
+                data-testid={`input-${field.id}`}
+              />
+            </label>
+            <div id={`${field.id}Error`} className="Error">
+              {formErrors[field.id.toLowerCase()]}
+            </div>
           </div>
         );
       }
     };
     return formValues?.map((fieldGroup, index) => {
-      // Check if the field group is an array (multiple columns)
       if (Array.isArray(fieldGroup)) {
         return (
           <div key={index} className="row">
@@ -208,23 +414,46 @@ const Form = () => {
       }
     });
   }, [formValues, formErrors, handleChange]);
+  // console.log(formState, "el state final");
   const handleSubmit = (e, form) => {
-    console.log(
-      Object.values(formErrors).every((error) => error === ""),
-      "LO QUE BUSCO"
-    );
     e.preventDefault();
     if (Object.values(formErrors).every((error) => error === "")) {
       dispatch(setUserRecord(form));
       navigate("/thankyou", { replace: true });
-    } else Swal.fire({ title: "Form validation", text: "Please fill the remaining values", icon: "error" });
+    } else {
+      console.log("Swal fire de la peor manera");
+      Swal.fire({ title: "Form validation", text: "Please fill the remaining values", icon: "error" });
+    }
   };
+  console.log(formValues.length, "length");
+  const welcomeAnimation = Array.from("Welcome to Command Link's Screening Dynamic form!");
+  const NoElementsTitle = "Oops...";
+  const NoElementsSpan = "We are sorry, but there are no elements to render.";
   return (
     <FormContainer>
-      <RegisterTitle>Please fill the form to continue!</RegisterTitle>
-      <form onSubmit={(e) => handleSubmit(e, formState)}>
-        {renderFields} <button type="submit">Send</button>
-      </form>
+      <RegisterTitle>
+        {welcomeAnimation.map((el, index) => (
+          <WelcomeLetter key={index} style={{ animationDelay: `${index * 0.25}s` }}>
+            {el}
+          </WelcomeLetter>
+        ))}
+      </RegisterTitle>
+      <StyledForm
+        style={{ justifyContent: formValues.length === 0 ? "space-between" : "center" }}
+        onSubmit={(e) => handleSubmit(e, formState)}
+      >
+        {formValues.length > 0 ? (
+          RenderFields
+        ) : (
+          <Container>
+            <Title>{NoElementsTitle}</Title>
+            <Message>{NoElementsSpan}</Message>
+          </Container>
+        )}
+        <SubmitButton type="submit" aria-label="Submit Form">
+          Send
+        </SubmitButton>
+      </StyledForm>
     </FormContainer>
   );
 };

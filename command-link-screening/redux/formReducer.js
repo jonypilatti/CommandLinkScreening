@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const initialState = {
+export const initialState = {
   formValues: [],
   userRecord: {},
 };
@@ -13,6 +13,7 @@ const formSlice = createSlice({
       return { ...state, formValues: action.payload };
     },
     setUserRecord: (state, action) => {
+      console.log(action.type, "el type que veo");
       return { ...state, userRecord: action.payload };
     },
   },

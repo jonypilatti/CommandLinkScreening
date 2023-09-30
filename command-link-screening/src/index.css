@@ -13,7 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
+select {
+  /* Override select-specific styles */
+  appearance: none; /* Remove default styles */
+  background-repeat: no-repeat;
+  background-position: right center;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -25,10 +30,7 @@ a:hover {
 
 body {
   box-sizing: border-box;
-
   margin: 0;
-  padding: 15px;
-  display: flex;
   align-items: center;
   justify-content: center;
   place-items: center;
