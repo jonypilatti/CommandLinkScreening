@@ -11,7 +11,7 @@ router.get("/getDynamicForm", async (req, res) => {
     else return res.status(200).send({ Error: "The form has no values to render." });
   } catch (err) {
     console.error(err, "An error happened while fetching the form");
-    return res.status(400).send({ Error: "An unexpected error happened: " + err?.message || err?.code });
+    return res.status(400).send({ Error: "An unexpected error happened. Please contact the administrator" });
   }
 });
 
