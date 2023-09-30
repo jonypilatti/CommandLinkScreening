@@ -195,6 +195,7 @@ const RegisterTitle = styled.h1`
 const WelcomeLetter = styled.span`
   animation: ${glowAnimation} 2s ease-in-out infinite;
   text-shadow: 1px 1px 2px #009d71;
+  font-size: 28px;
   color: transparent;
 `;
 const SubmitButton = styled.button`

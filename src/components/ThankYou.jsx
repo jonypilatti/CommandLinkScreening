@@ -12,26 +12,34 @@ const ThankYouWrapper = styled.div`
   text-align: left;
   border: 1px solid white;
   padding: 20px;
-  max-width: 1000px;
+  width: 50%;
   overflow: hidden;
-  margin: 0 auto;
   overflow-wrap: break-word;
   background-color: #4c007d;
   border-radius: 16px;
   margin-bottom: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
   margin-top: 20px;
+  @media (max-width: 500px) {
+    width: 75%;
+  }
+  @media (max-width: 300px) {
+    width: 70%;
+  }
 `;
 
 const ThankYouHeading = styled.h1`
   align-self: center;
   text-align: center;
   margin-bottom: 40px;
+  margin-top: 0;
   overflow-wrap: break-word;
   white-space: normal;
   font-size: 32px;
   @media (max-width: 500px) {
+    margin-top: 0;
+    padding-top: 20px;
     font-size: 24px;
   }
 `;
@@ -39,6 +47,7 @@ const ThankYouHeading = styled.h1`
 const UserDataList = styled.ul`
   display: flex;
   list-style: none;
+  width: 100%;
   border: 2px solid white;
   border-radius: 8px;
   padding: 0;
@@ -59,6 +68,7 @@ const UserDataItem = styled.li`
   padding-bottom: 10px;
   background-color: rgb(68, 85, 111);
   width: 100%;
+
   color: #8ed8f8;
   @media (max-width: 500px) {
     flex-direction: column;
@@ -75,6 +85,7 @@ const UserDataArrayItem = styled.li`
   align-self: flex-start;
   text-overflow: ellipsis;
   height: 100%;
+
   overflow: hidden;
   min-height: 100%;
   background-color: rgb(68, 85, 111);
@@ -101,6 +112,7 @@ const Row = styled.div`
   justify-content: center;
   align-self: flex-start;
   width: 100%;
+
   text-overflow: ellipsis;
   overflow-wrap: break-word;
 `;
@@ -112,40 +124,66 @@ const Value = styled.span`
   float: left;
   overflow-wrap: break-word;
   text-align: left;
-  width: 90%;
-  font-size:20px;
-  padding: 5px;
-  overflow-x: scroll; 
-  overflow-y: hidden;
+  width: 95%;
   height: 100%;
+  font-size: 20px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 
-  scrollbar-width: thin;
-  scrollbar-color: #ccc #f0f0f0;
+  scrollbar-color: #4c007d;
   -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 10px;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+
+    @media (max-width: 500px) {
+      width: 5px;
+    }
+    @media (max-width: 300px) {
+      width: 1px;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+    @media (max-width: 500px) {
+      width: 2px;
+    }
+    @media (max-width: 300px) {
+      width: 2px;
+    }
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #4c007d;
+    @media (max-width: 500px) {
+      width: 5px;
+    }
+    @media (max-width: 300px) {
+      width: 3px;
+    }
+  }
   @media (max-width: 500px) {
     text-align: left;
     width: 95%;
     height: 100%;
-    font-size:16px;
+    padding-left: 5px;
+    font-size: 16px;
   }
   @media (max-width: 300px) {
     text-align: left;
-    width: 95%;
+    width: 90%;
     height: 100%;
-    font-size:14px;
+    padding-left: 5px;
+    padding-right: 10%;
+    font-size: 14px;
   }
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #ccc; 
-    border-radius: 5px;
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #999; 
-  }
-
 `;
 
 const IdField = styled.h4`
@@ -174,13 +212,17 @@ const TitleLetter = styled.span`
   font-size: 28px;
   color: transparent;
 `;
-const ThankYouContainer = styled.div`
-display:flex;
-width: "100%"; justify-content: "center":
-height:100%;
-min-height:100vh;
-background-color:black;
-flex-direction:column;`;
+const ThankYouContainer = styled.section`
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+  margin: auto;
+  @media (max-width: 500px) {
+    margin-left: 0;
+  }
+`;
 const ThankYou = () => {
   const formValues = useSelector((state) => state.form.formValues);
   const userRecord = useSelector((state) => state.form.userRecord);
@@ -249,7 +291,7 @@ const ThankYou = () => {
   };
 
   return (
-    <ThankYouContainer style={{ display: "flex", width: "100%", justifyContent: "center" }}>
+    <ThankYouContainer>
       <ThankYouHeading>
         {title.map((el, index) => (
           <TitleLetter key={index} style={{ animationDelay: `${index * 0.25}s` }}>
