@@ -18,7 +18,6 @@ const router = createBrowserRouter([
     element: <ThankYou />,
   },
 ]);
-console.log(store.getState(), "LA STORE QUE QUIERO VER");
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <RouterProvider router={router} />

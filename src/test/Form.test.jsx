@@ -70,7 +70,6 @@ describe("Form Component", () => {
       </Provider>
     );
     const state = store.getState();
-    // console.log(state, "el state", state.form);
 
     if (state.form.formValues.length > 0) {
       fireEvent.change(getByLabelText("First name"), { target: { value: "John" } });

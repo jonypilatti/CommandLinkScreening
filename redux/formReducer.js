@@ -13,7 +13,6 @@ const formSlice = createSlice({
       return { ...state, formValues: action.payload };
     },
     setUserRecord: (state, action) => {
-      console.log(action.type, "el type que veo");
       return { ...state, userRecord: action.payload };
     },
   },

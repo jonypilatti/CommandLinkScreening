@@ -246,7 +246,6 @@ const Form = () => {
   //States for the Errors and Input values
   const [formErrors, setFormErrors] = useState({});
   const [formState, setFormState] = useState({});
-  // console.log(formErrors, "los form errors", formState);
   const dispatch = useDispatch();
   //Auxiliary functions to make the initialState for the dynamic form
   function extractIds(data) {
@@ -414,18 +413,15 @@ const Form = () => {
       }
     });
   }, [formValues, formErrors, handleChange]);
-  // console.log(formState, "el state final");
   const handleSubmit = (e, form) => {
     e.preventDefault();
     if (Object.values(formErrors).every((error) => error === "")) {
       dispatch(setUserRecord(form));
       navigate("/thankyou", { replace: true });
     } else {
-      console.log("Swal fire de la peor manera");
       Swal.fire({ title: "Form validation", text: "Please fill the remaining values", icon: "error" });
     }
   };
-  console.log(formValues.length, "length");
   const welcomeAnimation = Array.from("Welcome to Command Link's Screening Dynamic form!");
   const NoElementsTitle = "Oops...";
   const NoElementsSpan = "We are sorry, but there are no elements to render.";
