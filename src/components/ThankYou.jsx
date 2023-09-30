@@ -121,6 +121,7 @@ const Value = styled.span`
   display: flex;
   white-space: normal;
   text-overflow: string;
+  flex-wrap: break-word;
   float: left;
   overflow-wrap: break-word;
   text-align: left;
