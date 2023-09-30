@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import Swal from "sweetalert2";
 export const initialState = {
   formValues: [],
   userRecord: {},
@@ -22,7 +23,8 @@ export const getForm = () => {
   return async function (dispatch) {
     try {
       //APIURL IS LOCALHOST FOR DEVELOPMENT
-      const APIURL = "http://localhost:3001";
+      const APIURLLOCALHOST = "http://localhost:3001";
+      const APIURL = "http://192.168.0.26:3001";
 
       const formData = await axios({
         method: "get",
@@ -31,10 +33,19 @@ export const getForm = () => {
       });
       if (!formData.data.Error) {
         await dispatch(makeFormInitialState(formData.data));
-      } else alert("An error happened while fetching the form");
+      } else
+        Swal.fire({
+          title: "Error",
+          text: "An unexpected error happened while fetching the form.",
+          icon: "error",
+        });
     } catch (err) {
       console.error(err, "el error de los banners");
-      alert("An unexpected error happened while fetching the form: " + err?.message || err?.code);
+      Swal.fire({
+        title: "Error",
+        text: "An unexpected error happened while fetching the form: " + err?.message || err?.code,
+        icon: "error",
+      });
     }
   };
 };

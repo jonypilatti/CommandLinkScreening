@@ -50,6 +50,8 @@ In the terminal located in the main project folder, install the frontend modules
 npm install
 ```
 
+If you wish to host for testing in mobile, you need to go to the formReducer.js file and switch the constant from APIURLLOCALHOST to APIURL. If you want to test it on localhost you can do it by using APIURL instead. Obviously, you need to start the backend server for this to work.
+
 Once the installation is finished, launch the development server:
 
 ```shell
